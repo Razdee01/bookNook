@@ -1,0 +1,242 @@
+"use client";
+
+import { useState } from "react";
+import { Upload, Plus, ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export default function AddBookPage() {
+  const [descriptionLength, setDescriptionLength] = useState(0);
+  const [imageName, setImageName] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+      const bookData = {
+        ...data,
+        addedDate: new Date().toISOString(),
+      };
+    const res = await fetch("http://localhost:5000/add-books", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await res.json();
+    console.log(result);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F8F6F0] flex flex-col">
+      <main className="flex-1 px-6 py-12 lg:py-16">
+        <div className="mx-auto max-w-3xl space-y-8">
+          <div className="text-center space-y-3">
+            <div className="inline-flex items-center gap-2">
+              <span className="h-[1px] w-6 bg-[#C6A15B]" />
+              <span className="font-sans text-xs font-semibold uppercase tracking-wider text-[#C6A15B]">
+                Grow the collection
+              </span>
+              <span className="h-[1px] w-6 bg-[#C6A15B]" />
+            </div>
+
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#183D32]">
+              Add a new book
+            </h1>
+
+            <p className="font-sans text-sm text-gray-600">
+              Share a title worth discovering with the BookNook community.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-[#E8E4DA] bg-white p-8 sm:p-10 shadow-sm">
+            <div className="flex items-center gap-3 pb-6 mb-6 border-b border-[#E8E4DA]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#183D32] text-white">
+                <Plus className="h-4 w-4" />
+              </div>
+
+              <div>
+                <h3 className="font-serif text-lg font-bold text-[#183D32]">
+                  Book details
+                </h3>
+                <p className="font-sans text-xs text-gray-500">
+                  Fields marked with an asterisk are required.
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="block font-sans text-xs font-semibold uppercase tracking-wider text-gray-700">
+                    Book title <span className="text-[#C6A15B]">*</span>
+                  </label>
+
+                  <input
+                    name="title"
+                    type="text"
+                    placeholder="e.g. The Midnight Library"
+                    className="w-full h-11 px-4 rounded-lg border border-[#E4E0D5] bg-white text-sm text-[#183D32] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#183D32]/20 focus:border-[#183D32] transition-all"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block font-sans text-xs font-semibold uppercase tracking-wider text-gray-700">
+                    Author <span className="text-[#C6A15B]">*</span>
+                  </label>
+
+                  <input
+                    name="author"
+                    type="text"
+                    placeholder="e.g. Matt Haig"
+                    className="w-full h-11 px-4 rounded-lg border border-[#E4E0D5] bg-white text-sm text-[#183D32] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#183D32]/20 focus:border-[#183D32] transition-all"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="block font-sans text-xs font-semibold uppercase tracking-wider text-gray-700">
+                    Category <span className="text-[#C6A15B]">*</span>
+                  </label>
+
+                  <div className="relative">
+                    <select
+                      name="category"
+                      className="w-full h-11 px-4 rounded-lg border border-[#E4E0D5] bg-white text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#183D32]/20 focus:border-[#183D32] transition-all appearance-none cursor-pointer"
+                      defaultValue=""
+                      required
+                    >
+                      <option value="" disabled>
+                        Select a category
+                      </option>
+                      <option value="fiction">Fiction</option>
+                      <option value="history">History</option>
+                      <option value="kids">Kids</option>
+                      <option value="science">Science</option>
+                      <option value="others">Others</option>
+                    </select>
+
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-500">
+                      <ChevronDown className="h-4 w-4" />
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block font-sans text-xs font-semibold uppercase tracking-wider text-gray-700">
+                    Number of copies <span className="text-[#C6A15B]">*</span>
+                  </label>
+
+                  <input
+                    name="copies"
+                    type="number"
+                    min="1"
+                    defaultValue="1"
+                    className="w-full h-11 px-4 rounded-lg border border-[#E4E0D5] bg-white text-sm text-[#183D32] focus:outline-none focus:ring-2 focus:ring-[#183D32]/20 focus:border-[#183D32] transition-all"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block font-sans text-xs font-semibold uppercase tracking-wider text-gray-700">
+                  Cover image <span className="text-[#C6A15B]">*</span>
+                </label>
+
+                <label className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#DCD6C8] bg-[#FAF8F5] p-8 text-center hover:bg-[#F5F2EC] transition-colors cursor-pointer">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm mb-3 text-[#183D32]">
+                    <Upload className="h-5 w-5" />
+                  </div>
+
+                  <p className="font-sans text-sm text-gray-700">
+                    {imageName ? (
+                      <span className="font-semibold text-[#183D32]">
+                        {imageName}
+                      </span>
+                    ) : (
+                      <>
+                        Drop a cover image here, or{" "}
+                        <span className="text-[#183D32] font-semibold underline underline-offset-2">
+                          browse
+                        </span>
+                      </>
+                    )}
+                  </p>
+
+                  <p className="font-sans text-[11px] text-gray-400 mt-1">
+                    JPG or PNG · Maximum 5MB · Portrait format recommended
+                  </p>
+
+                  <input
+                    name="image"
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    className="hidden"
+                    required
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+
+                      if (file && file.size > 5 * 1024 * 1024) {
+                        alert("Image must be smaller than 5MB");
+                        e.target.value = "";
+                        setImageName("");
+                        return;
+                      }
+
+                      setImageName(file?.name || "");
+                    }}
+                  />
+                </label>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block font-sans text-xs font-semibold uppercase tracking-wider text-gray-700">
+                  Description <span className="text-[#C6A15B]">*</span>
+                </label>
+
+                <div className="relative">
+                  <textarea
+                    name="description"
+                    rows={4}
+                    placeholder="Write a thoughtful summary that helps readers discover this book..."
+                    maxLength={800}
+                    onChange={(e) =>
+                      setDescriptionLength(e.target.value.length)
+                    }
+                    className="w-full p-4 rounded-lg border border-[#E4E0D5] bg-white text-sm text-[#183D32] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#183D32]/20 focus:border-[#183D32] transition-all resize-none"
+                    required
+                  />
+
+                  <div className="absolute bottom-3 right-3 font-sans text-[10px] text-gray-400">
+                    {descriptionLength} / 800 characters
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-4 border-t border-[#E8E4DA]">
+                <button
+                  type="button"
+                  className="font-sans text-sm font-medium text-gray-600 hover:text-[#183D32] transition-colors"
+                >
+                  Save as draft
+                </button>
+
+                <Button
+                  type="submit"
+                  className="bg-[#183D32] px-6 h-11 text-sm font-medium text-white shadow-md hover:bg-[#133229] flex items-center gap-2"
+                >
+                  Add to collection
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
