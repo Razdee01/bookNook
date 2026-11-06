@@ -14,7 +14,7 @@ const NewArivals = async () => {
   const books: IBook[] = await res.json();
 
   return (
-    <Link href={"/books"} className="bg-[#F8F6F0] py-16 lg:py-24">
+    <Link href="/books" className="bg-[#F8F6F0] py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">

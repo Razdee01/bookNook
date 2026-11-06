@@ -4,8 +4,31 @@ import Link from "next/link";
 import Image from "next/image";
 import { User, Mail, Link as LinkIcon, Lock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import React from "react";
+import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 
 export default function JoinPage() {
+  const handleSignUP=async(e:React.SubmitEvent<HTMLElement>)=>{
+    e.preventDefault()
+    const formData= new FormData(e.target)
+    const signUpData = Object.fromEntries(
+      formData.entries(),
+    ) as { name: string, email: string,image:string ,password:string }
+    console.log(signUpData);
+    
+    const { data, error } = await authClient.signUp.email({
+      ...signUpData,
+    });
+    if (data) {
+      redirect("/")
+    }
+    if(error){
+      console.log(error);
+      
+    }
+    
+  }
   return (
     <main className="min-h-screen grid grid-cols-1 lg:grid-cols-12 bg-[#F8F6F0]">
       {/* Left Column: Cozy Library Image & Quote */}
@@ -52,7 +75,7 @@ export default function JoinPage() {
           </div>
 
           {/* Registration Form */}
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+          <form onSubmit={handleSignUP} className="space-y-4">
             {/* Full Name */}
             <div className="space-y-1.5">
               <label className="block font-sans text-xs font-medium uppercase tracking-wider text-gray-700">
@@ -63,6 +86,7 @@ export default function JoinPage() {
                   <User className="h-4 w-4" />
                 </span>
                 <input
+                  name="name"
                   type="text"
                   placeholder="Eleanor Vance"
                   className="w-full h-11 pl-10 pr-4 rounded-lg border border-[#E4E0D5] bg-white text-sm text-[#183D32] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#183D32]/20 focus:border-[#183D32] transition-all"
@@ -81,6 +105,7 @@ export default function JoinPage() {
                   <Mail className="h-4 w-4" />
                 </span>
                 <input
+                  name="email"
                   type="email"
                   placeholder="you@example.com"
                   className="w-full h-11 pl-10 pr-4 rounded-lg border border-[#E4E0D5] bg-white text-sm text-[#183D32] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#183D32]/20 focus:border-[#183D32] transition-all"
@@ -99,6 +124,7 @@ export default function JoinPage() {
                   <LinkIcon className="h-4 w-4" />
                 </span>
                 <input
+                  name="image"
                   type="url"
                   placeholder="https://your-photo.com"
                   className="w-full h-11 pl-10 pr-4 rounded-lg border border-[#E4E0D5] bg-white text-sm text-[#183D32] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#183D32]/20 focus:border-[#183D32] transition-all"
@@ -116,6 +142,7 @@ export default function JoinPage() {
                   <Lock className="h-4 w-4" />
                 </span>
                 <input
+                  name="password"
                   type="password"
                   placeholder="At least 8 characters"
                   className="w-full h-11 pl-10 pr-4 rounded-lg border border-[#E4E0D5] bg-white text-sm text-[#183D32] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#183D32]/20 focus:border-[#183D32] transition-all"

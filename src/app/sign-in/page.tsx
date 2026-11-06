@@ -4,8 +4,31 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 
 export default function SignInPage() {
+   const handleSignUP = async (e: React.SubmitEvent<HTMLElement>) => {
+     e.preventDefault();
+     const formData = new FormData(e.target);
+     const signUpData = Object.fromEntries(formData.entries()) as {
+       name: string;
+       email: string;
+       photoURL: string;
+       password: string;
+     };
+     console.log(signUpData);
+
+     const { data, error } = await authClient.signIn.email({
+       ...signUpData,
+       callbackURL: "/"
+     });
+   
+     
+     if (error) {
+       console.log(error);
+     }
+   };
   return (
     <main className="min-h-screen grid grid-cols-1 lg:grid-cols-12 bg-[#F8F6F0]">
       {/* Left Column: Cozy Library Image & Quote */}
@@ -51,7 +74,7 @@ export default function SignInPage() {
           </div>
 
           {/* Form */}
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
+          <form onSubmit={handleSignUP} className="space-y-5">
             {/* Email Field */}
             <div className="space-y-1.5">
               <label className="block font-sans text-xs font-medium uppercase tracking-wider text-gray-700">
@@ -63,6 +86,7 @@ export default function SignInPage() {
                 </span>
                 <input
                   type="email"
+                  name="email"
                   placeholder="you@example.com"
                   className="w-full h-11 pl-10 pr-4 rounded-lg border border-[#E4E0D5] bg-white text-sm text-[#183D32] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#183D32]/20 focus:border-[#183D32] transition-all"
                   required
@@ -81,6 +105,7 @@ export default function SignInPage() {
                 </span>
                 <input
                   type="password"
+                  name="password"
                   placeholder="Enter your password"
                   className="w-full h-11 pl-10 pr-4 rounded-lg border border-[#E4E0D5] bg-white text-sm text-[#183D32] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#183D32]/20 focus:border-[#183D32] transition-all"
                   required
