@@ -22,7 +22,7 @@ export default function AddBookPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(bookData),
     });
     const result = await res.json();
     console.log(result);
@@ -144,53 +144,20 @@ export default function AddBookPage() {
 
               <div className="space-y-2">
                 <label className="block font-sans text-xs font-semibold uppercase tracking-wider text-gray-700">
-                  Cover image <span className="text-[#C6A15B]">*</span>
+                  Cover image URL <span className="text-[#C6A15B]">*</span>
                 </label>
 
-                <label className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#DCD6C8] bg-[#FAF8F5] p-8 text-center hover:bg-[#F5F2EC] transition-colors cursor-pointer">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm mb-3 text-[#183D32]">
-                    <Upload className="h-5 w-5" />
-                  </div>
+                <input
+                  name="image"
+                  type="url"
+                  placeholder="https://example.com/book-cover.jpg"
+                  className="w-full h-11 px-4 rounded-lg border border-[#E4E0D5] bg-white text-sm text-[#183D32] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#183D32]/20 focus:border-[#183D32] transition-all"
+                  required
+                />
 
-                  <p className="font-sans text-sm text-gray-700">
-                    {imageName ? (
-                      <span className="font-semibold text-[#183D32]">
-                        {imageName}
-                      </span>
-                    ) : (
-                      <>
-                        Drop a cover image here, or{" "}
-                        <span className="text-[#183D32] font-semibold underline underline-offset-2">
-                          browse
-                        </span>
-                      </>
-                    )}
-                  </p>
-
-                  <p className="font-sans text-[11px] text-gray-400 mt-1">
-                    JPG or PNG · Maximum 5MB · Portrait format recommended
-                  </p>
-
-                  <input
-                    name="image"
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    className="hidden"
-                    required
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-
-                      if (file && file.size > 5 * 1024 * 1024) {
-                        alert("Image must be smaller than 5MB");
-                        e.target.value = "";
-                        setImageName("");
-                        return;
-                      }
-
-                      setImageName(file?.name || "");
-                    }}
-                  />
-                </label>
+                <p className="text-xs text-gray-400">
+                  Paste a direct link to the book cover image.
+                </p>
               </div>
 
               <div className="space-y-2">

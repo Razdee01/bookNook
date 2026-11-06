@@ -3,6 +3,7 @@ import { Playfair_Display, Inter, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/NavBar";
+import { Footer } from "@/components/Footer";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col font-sans">
         <Navbar></Navbar>
         {children}
+        <Footer></Footer>
         
         </body>
     </html>
