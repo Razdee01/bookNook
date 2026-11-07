@@ -34,13 +34,13 @@ const NewArivals = async () => {
           </div>
 
           {/* View All Books Link */}
-          <Link
-            href="/books"
+          <button
+            
             className="inline-flex items-center gap-2 font-sans text-sm font-semibold text-[#183D32] hover:text-[#C6A15B] transition-colors"
           >
             View all books
             <ArrowRight className="h-4 w-4" />
-          </Link>
+          </button>
         </div>
 
         {/* Book Cards Grid (6 Columns on large screens) */}

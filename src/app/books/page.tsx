@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { Heart, ArrowRight } from "lucide-react";
 import { IBook } from "@/type/type";
+import Link from "next/link";
 
 const AllBooks = async () => {
   const res = await fetch("http://localhost:5000/books", {
@@ -43,7 +44,8 @@ const AllBooks = async () => {
         {/* Books Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {books?.map((book) => (
-            <div
+            <Link
+            href={`/books/${book._id}`}
               key={book._id}
               className="group flex flex-col justify-between rounded-2xl bg-white/70 p-4 border border-[#E8E4DA] shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1"
             >
@@ -98,7 +100,7 @@ const AllBooks = async () => {
                   <ArrowRight className="h-3.5 w-3.5" />
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
