@@ -9,26 +9,32 @@ import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 
 export default function JoinPage() {
-  const handleSignUP=async(e:React.SubmitEvent<HTMLElement>)=>{
-    e.preventDefault()
-    const formData= new FormData(e.target)
-    const signUpData = Object.fromEntries(
-      formData.entries(),
-    ) as { name: string, email: string,image:string ,password:string }
+  const handleSignUP = async (e: React.SubmitEvent<HTMLElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const signUpData = Object.fromEntries(formData.entries()) as {
+      name: string;
+      email: string;
+      image: string;
+      password: string;
+    };
     console.log(signUpData);
-    
+
     const { data, error } = await authClient.signUp.email({
       ...signUpData,
     });
     if (data) {
-      redirect("/")
+      redirect("/");
     }
-    if(error){
+    if (error) {
       console.log(error);
-      
     }
-    
-  }
+  };
+  const handleGoogleSignUp = async () => {
+    const data = await authClient.signIn.social({
+      provider: "google",
+    });
+  };
   return (
     <main className="min-h-screen grid grid-cols-1 lg:grid-cols-12 bg-[#F8F6F0]">
       {/* Left Column: Cozy Library Image & Quote */}
@@ -172,6 +178,7 @@ export default function JoinPage() {
 
           {/* Google Sign In Button */}
           <button
+            onClick={handleGoogleSignUp}
             type="button"
             className="w-full h-12 flex items-center justify-center gap-3 rounded-lg border border-[#E4E0D5] bg-white text-sm font-medium text-[#183D32] hover:bg-gray-50 transition-all shadow-sm"
           >
