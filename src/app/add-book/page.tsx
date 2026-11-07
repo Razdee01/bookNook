@@ -1,12 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Upload, Plus, ChevronDown } from "lucide-react";
+import { Plus, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 
 export default function AddBookPage() {
+  const {data:session}=authClient.useSession()
+  const user=session?.user
+ 
+  
   const [descriptionLength, setDescriptionLength] = useState(0);
-  const [imageName, setImageName] = useState("");
+  
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -16,6 +22,7 @@ export default function AddBookPage() {
       const bookData = {
         ...data,
         addedDate: new Date().toISOString(),
+        addedBy:user?.email
       };
     const res = await fetch("http://localhost:5000/add-books", {
       method: "POST",
@@ -25,7 +32,13 @@ export default function AddBookPage() {
       body: JSON.stringify(bookData),
     });
     const result = await res.json();
-    console.log(result);
+    
+    
+    if(result){
+      redirect("/books")
+    }
+    
+   
   };
 
   return (
