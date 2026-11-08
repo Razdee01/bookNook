@@ -1,3 +1,4 @@
+
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -7,7 +8,7 @@ import {
   Search,
   Filter,
   Edit,
-  Trash2,
+  
   BookOpen,
   Library,
   Sparkles,
@@ -15,17 +16,10 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import DeleteButton from "@/components/DeleteButton";
+import { IBook } from "@/type/type";
 
-interface IMyBook {
-  _id: string;
-  title: string;
-  author: string;
-  category: string;
-  image: string;
-  copies?: number;
-  status?: string;
-  addedDate: string;
-}
+
 
 const MyBooksPage = async () => {
   const session = await auth.api.getSession({
@@ -38,7 +32,10 @@ const MyBooksPage = async () => {
     cache: "no-store",
   });
 
-  const myBooks: IMyBook[] = await res.json();
+  const myBooks: IBook[] = await res.json();
+  
+  
+
 
   // Calculate dynamic stats from actual data if needed, or use defaults
   const totalBooksAdded = myBooks?.length || 0;
@@ -209,12 +206,14 @@ const MyBooksPage = async () => {
                       <td className="py-4 px-6">
                         <span
                           className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide ${
-                            book.status?.toLowerCase() === "borrowed"
-                              ? "bg-amber-100/70 text-amber-800"
-                              : "bg-emerald-100/70 text-emerald-800"
+                            Number(book.copies ?? 1) > 0
+                              ? "bg-emerald-100/70 text-emerald-800"
+                              : "bg-red-100/70 text-red-800"
                           }`}
                         >
-                          {book.status || "Available"}
+                          {Number(book.copies ?? 1) > 0
+                            ? "Available"
+                            : "Unavailable"}
                         </span>
                       </td>
 
@@ -242,13 +241,7 @@ const MyBooksPage = async () => {
                           >
                             <Edit className="h-3.5 w-3.5" />
                           </Link>
-                          <button
-                            type="button"
-                            className="flex h-8 w-8 items-center justify-center rounded-lg border border-red-100 bg-white text-red-500 hover:bg-red-50 transition-colors shadow-sm"
-                            title="Delete book"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
+                          <DeleteButton book={book}></DeleteButton>
                         </div>
                       </td>
                     </tr>
