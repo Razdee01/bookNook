@@ -60,7 +60,7 @@ const BookCard = ({ BookData }: { BookData: IBook }) => {
 
       if (res.ok) {
         setIsOpen(false);
-        console.log("done");
+       
         
         // Handle success notification or state update here
       }
