@@ -18,6 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import DeleteButton from "@/components/DeleteButton";
 import { IBook } from "@/type/type";
+import EditButton from "@/components/EditButton";
 
 
 
@@ -234,13 +235,7 @@ const MyBooksPage = async () => {
                       {/* Actions */}
                       <td className="py-4 px-6 text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <Link
-                            href={`/books/edit/${book._id}`}
-                            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#E4E0D5] bg-white text-gray-600 hover:text-[#183D32] hover:bg-gray-50 transition-colors shadow-sm"
-                            title="Edit book"
-                          >
-                            <Edit className="h-3.5 w-3.5" />
-                          </Link>
+                          <EditButton book={book}></EditButton>
                           <DeleteButton book={book}></DeleteButton>
                         </div>
                       </td>
