@@ -20,9 +20,13 @@ import DeleteButton from "@/components/DeleteButton";
 import { IBook } from "@/type/type";
 import EditButton from "@/components/EditButton";
 import getTokenFromServer from "@/lib/getTokenFromServer";
+import { Metadata } from "next";
 
 
-
+export const metadata: Metadata = {
+  title: "BookNook | My Books Library",
+  description: "Manage titles you've added to the collection.",
+};
 const MyBooksPage = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),

@@ -1,27 +1,24 @@
-
 import BookCard from "@/components/BookCard";
-
 import getTokenFromServer from "@/lib/getTokenFromServer";
+import { notFound } from "next/navigation";
 
-import { IBook } from "@/type/type";
-
-
-const booksDeatails = async ({ params }: { params: { id: string } }) => {
+const BookDetailsPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
   const { id } = await params;
-    
-    const token = getTokenFromServer()
-  const res = await fetch(`http://localhost:5000/books-details/${id}`,{
-    headers:{
-      authorization:`bearer ${token}`
-    }
-  });
-  const BookData: IBook = await res.json();
+  const token = await getTokenFromServer();
 
-  return (
-    <div>
-      <BookCard BookData={BookData}></BookCard>
-    </div>
-  );
+  const res = await fetch(`http://localhost:5000/books-details/${id}`, {
+    cache: "no-store",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!res.ok) notFound();
+
+  const book = await res.json();
+  return <BookCard BookData={book} />;
 };
 
-export default booksDeatails;
+export default BookDetailsPage;

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
+import getTokenFromClient from "@/lib/getTokenFromClient";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -24,6 +26,7 @@ const BookCard = ({ BookData }: { BookData: IBook }) => {
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
+  console.log(BookData);
 
   // Calculate return date (1 month from today)
   const today = new Date();
@@ -38,34 +41,50 @@ const BookCard = ({ BookData }: { BookData: IBook }) => {
 
   const handleBorrowSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+  
+    
     setIsSubmitting(true);
 
     const borrowPayload = {
       bookId: BookData._id,
       bookTitle: BookData.title,
+      author: BookData.author,
+      image: BookData.image,
       userName: user?.name,
       userEmail: user?.email,
       borrowDate: today.toISOString(),
       returnDate: returnDate.toISOString(),
     };
 
-    
     try {
-      
+      const token = await getTokenFromClient();
+
       const res = await fetch("http://localhost:5000/borrows", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(borrowPayload),
       });
 
-      if (res.ok) {
+      if (res.status === 409) {
+        toast.error("You have already borrowed this book");
         setIsOpen(false);
-       
-        
-        // Handle success notification or state update here
+        return;
       }
+
+      if (!res.ok) {
+        toast.error("Something went wrong. Please try again.");
+        return;
+      }
+
+      toast.success("Book borrowed successfully!");
+      setIsOpen(false);
     } catch (err) {
       console.error("Borrow error:", err);
+      toast.error("Network error. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
-import { redirect } from "next/navigation";
+
 
 export default function SignInPage() {
   const handleSignUP = async (e: React.SubmitEvent<HTMLElement>) => {

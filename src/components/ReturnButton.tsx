@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface IReturnProps {
   borrowId: string;
@@ -20,7 +21,7 @@ export default function ReturnButton({ borrowId }: IReturnProps) {
       });
 
       if (res.ok) {
-        alert("Book returned successfully!");
+        toast.success("Book returned successfully!");
         router.refresh();
       } else {
         alert("Failed to return book.");

@@ -1,11 +1,11 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import React from "react";
 import Image from "next/image";
 import { BookOpen, Clock, AlertCircle } from "lucide-react";
 import ReturnButton from "@/components/ReturnButton";
 import getTokenFromServer from "@/lib/getTokenFromServer";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 
 interface IBorrowItem {
   _id: string;
@@ -19,6 +19,10 @@ interface IBorrowItem {
   returnDate: string; // due date saved in the database
 }
 
+export const metadata: Metadata = {
+  title: "BookNook | My Borrows",
+  description: "Keep track of your active book loans.",
+};
 const TZ = "Asia/Dhaka";
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 const LOAN_DAYS = 30;

@@ -2,8 +2,12 @@ import Image from "next/image";
 import { Heart, ArrowRight } from "lucide-react";
 import { IBook } from "@/type/type";
 import Link from "next/link";
+import { Metadata } from "next";
 
-
+export const metadata: Metadata = {
+  title: "BookNook | All Books",
+  description: "Browse the full library collection.",
+};
 const AllBooks = async () => {
   const res = await fetch("http://localhost:5000/books", {
     cache: "no-store",

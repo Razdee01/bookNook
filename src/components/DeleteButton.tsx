@@ -3,6 +3,7 @@
 import type { IBook } from "@/type/type";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface IProps {
   book: IBook;
@@ -21,6 +22,7 @@ const DeleteButton = ({ book }: IProps) => {
 
     if (data.deletedCount > 0) {
       router.refresh();
+      toast.success("Book deleted successfully!");
     }
   };
 
