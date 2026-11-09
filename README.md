@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BookNook
+
+**A cozy digital library where readers discover, borrow, and manage books — built with Next.js 16.**
+
+BookNook is a full-stack book-lending web app. Readers can browse a curated catalog, sign in, borrow books, and track what they've borrowed; library members can also contribute by adding and managing their own book listings.
+
+## Key Features
+
+1. **Browse the catalog** — Full book collection with cover art, categories, and detail pages (`/books`, `/books/[id]`), plus a "New Arrivals" feed and category showcase on the landing page.
+2. **Secure authentication** — Email/password and Google sign-in via Better Auth, with JWT sessions and route protection (e.g. `/add-book` redirects signed-out visitors to `/sign-in`).
+3. **Manage listings** — Signed-in members can add books and edit or delete the listings they own from "My Books".
+4. **Borrow & return** — One-click borrowing from a book card, with a personal "My Borrows" dashboard showing due dates and returning books in a single click.
+5. **Polished, responsive UI** — Sticky session-aware navbar, loading states, toasts, a custom 404 page, and a warm paper-and-forest design system that scales from mobile to desktop.
+
+## Tech Stack
+
+| Layer      | Technology |
+| ---------- | ---------- |
+| Framework  | [Next.js 16](https://nextjs.org) (App Router, Turbopack) — `src/proxy.ts` request middleware |
+| UI         | React 19, TypeScript, Tailwind CSS v4, shadcn/ui (base-nova style on Base UI), lucide-react, sonner |
+| Auth       | Better Auth — email/password + Google OAuth, JWT plugin, MongoDB adapter |
+| Data       | MongoDB (auth store) + a separate REST API (book/borrow data) |
+| Build      | `next build`, ESLint 9 flat config, `tsc --noEmit` |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- A MongoDB database
+- **The BookNook backend running on `http://localhost:5000`** — this repo is the frontend only. Every book/borrow request calls that API (`/books`, `/borrows`, `/add-books`, …), so the pages will fail to load data without it.
+
+### Environment variables
+
+Create a `.env` in the project root:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+BETTER_AUTH_SECRET=        # better-auth session secret
+BETTER_AUTH_URL=           # e.g. http://localhost:3000
+MONGO_URI=                 # MongoDB connection string (auth uses the "bookNook" database)
+GOOGLE_CLIENT_ID=          # Google OAuth credentials (optional provider)
+GOOGLE_CLIENT_SECRET=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Run locally
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev        # http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Verify changes
 
-## Learn More
+```bash
+npx tsc --noEmit   # typecheck (no script exists for this)
+npm run lint       # eslint, flat config
+npm run build      # production build — also runs the TS check
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/            # App Router pages: /, /books, /books/[id], /add-book,
+                  # /my-books, /my-borrows, /sign-in, /join, api/auth/[...all]
+  components/     # Feature components (NavBar, Banner, BookCard, …) + ui/ (shadcn)
+  lib/            # auth.ts / auth-client.ts (Better Auth), token helpers, utils
+  proxy.ts        # Next 16 middleware — guards /add-book
+  type/           # Shared IBook interface
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Notes
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `postcss.config.mjs` and the `turbopack.resolveAlias` entry for `tw-animate-css` in `next.config.ts` are load-bearing — see `AGENTS.md` before touching them.
