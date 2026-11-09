@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Edit, X, Plus } from "lucide-react";
 import { IBook } from "@/type/type";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface IProps {
   book: IBook;
@@ -36,7 +37,7 @@ const EditButton = ({ book }: IProps) => {
 
       if (res.ok) {
         // Success Toast Notification
-        alert("Book updated successfully!");
+        toast.success("Book updated successfully!");
         setIsOpen(false);
         router.refresh();
       } else {
