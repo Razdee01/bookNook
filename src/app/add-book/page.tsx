@@ -5,6 +5,7 @@ import { Plus, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
+import getTokenFromClient from "@/lib/getTokenFromClient";
 
 export default function AddBookPage() {
   const {data:session}=authClient.useSession()
@@ -18,24 +19,33 @@ export default function AddBookPage() {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
+    const fromEntries = Object.fromEntries(formData.entries());
+    
+    const jwtToken =await getTokenFromClient()
+    
+      // Use this token for authenticated requests to external services
+    
       const bookData = {
-        ...data,
+        ...fromEntries,
         addedDate: new Date().toISOString(),
-        addedBy:user?.email
+        addedBy: user?.email,
       };
     const res = await fetch("http://localhost:5000/add-books", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: `bearer ${jwtToken}`,
       },
       body: JSON.stringify(bookData),
     });
     const result = await res.json();
+    console.log(result);
     
     
     if(result){
       redirect("/books")
+     
+      
     }
     
    

@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import DeleteButton from "@/components/DeleteButton";
 import { IBook } from "@/type/type";
 import EditButton from "@/components/EditButton";
+import getTokenFromServer from "@/lib/getTokenFromServer";
 
 
 
@@ -28,9 +29,14 @@ const MyBooksPage = async () => {
   });
 
   const email = session?.user.email;
+  const token=await getTokenFromServer()
 
   const res = await fetch(`http://localhost:5000/my-books/${email}`, {
     cache: "no-store",
+     headers: {
+          authorization: `Bearer ${token}`,
+        },
+
   });
 
   const myBooks: IBook[] = await res.json();

@@ -1,15 +1,16 @@
-import React from "react";
-
 import Image from "next/image";
 import { Heart, ArrowRight } from "lucide-react";
 import { IBook } from "@/type/type";
 import Link from "next/link";
+
 
 const AllBooks = async () => {
   const res = await fetch("http://localhost:5000/books", {
     cache: "no-store",
   });
   const books: IBook[] = await res.json();
+
+  
 
   return (
     <section className="bg-[#F8F6F0]  py-16 lg:py-15">

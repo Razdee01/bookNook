@@ -4,6 +4,8 @@ import React from "react";
 import Image from "next/image";
 import { BookOpen, Clock, AlertCircle } from "lucide-react";
 import ReturnButton from "@/components/ReturnButton";
+import getTokenFromServer from "@/lib/getTokenFromServer";
+import { redirect } from "next/navigation";
 
 interface IBorrowItem {
   _id: string;
@@ -83,26 +85,29 @@ const getBorrowDetails = (item: IBorrowItem) => {
 };
 
 const myBorrows = async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-  const user = session?.user;
+ const session = await auth.api.getSession({ headers: await headers() });
 
+ if (!session?.user) {
+   redirect("/login"); 
+ }
+
+ const user = session.user; 
+ const token = await getTokenFromServer();
   let borrows: IBorrowItem[] = [];
-  if (user?.email) {
-    try {
-      const res = await fetch(
-        `http://localhost:5000/borrows/${encodeURIComponent(user.email)}`,
-        { cache: "no-store" },
-      );
+  const res = await fetch(
+  `http://localhost:5000/borrows/${encodeURIComponent(user.email)}`,
+  {
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
       if (res.ok) {
         const data = await res.json();
         borrows = Array.isArray(data) ? data : [];
       }
-    } catch (error) {
-      console.error("Failed to fetch borrows:", error);
-    }
-  }
+ 
 
   const totalBorrowed = borrows.length;
 
