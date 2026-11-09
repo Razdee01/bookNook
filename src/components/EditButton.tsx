@@ -7,7 +7,7 @@ import { IBook } from "@/type/type";
 import { Button } from "@/components/ui/button";
 
 interface IProps {
-  book: IBook
+  book: IBook;
 }
 
 const EditButton = ({ book }: IProps) => {
@@ -23,19 +23,22 @@ const EditButton = ({ book }: IProps) => {
     const updatedData = Object.fromEntries(formData);
 
     try {
-      const res = await fetch(`http://localhost:5000/patch/${book._id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/patch/${book._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedData),
         },
-        body: JSON.stringify(updatedData),
-      });
+      );
 
       if (res.ok) {
         // Success Toast Notification
         alert("Book updated successfully!");
         setIsOpen(false);
-        router.refresh(); 
+        router.refresh();
       } else {
         alert("Failed to update book. Please try again.");
       }

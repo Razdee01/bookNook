@@ -42,8 +42,6 @@ const BookCard = ({ BookData }: { BookData: IBook }) => {
   const handleBorrowSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-  
-    
     setIsSubmitting(true);
 
     const borrowPayload = {
@@ -60,7 +58,7 @@ const BookCard = ({ BookData }: { BookData: IBook }) => {
     try {
       const token = await getTokenFromClient();
 
-      const res = await fetch("http://localhost:5000/borrows", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/borrows`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -146,7 +144,10 @@ const BookCard = ({ BookData }: { BookData: IBook }) => {
                 {BookData.title}
               </h1>
               <p className="font-sans text-base text-gray-600">
-                by <span className="font-semibold text-[#183D32]">{BookData.author}</span>
+                by{" "}
+                <span className="font-semibold text-[#183D32]">
+                  {BookData.author}
+                </span>
               </p>
             </div>
 
@@ -175,7 +176,8 @@ const BookCard = ({ BookData }: { BookData: IBook }) => {
                   Added to collection by:
                 </span>
                 <p className="text-[#183D32] font-medium">
-                  {BookData.username} {BookData.useremail && `(${BookData.useremail})`}
+                  {BookData.username}{" "}
+                  {BookData.useremail && `(${BookData.useremail})`}
                 </p>
               </div>
             )}
@@ -198,13 +200,17 @@ const BookCard = ({ BookData }: { BookData: IBook }) => {
                 <span className="block font-semibold uppercase tracking-wider text-gray-400">
                   Language
                 </span>
-                <span className="font-bold text-[#183D32] text-sm">English</span>
+                <span className="font-bold text-[#183D32] text-sm">
+                  English
+                </span>
               </div>
               <div>
                 <span className="block font-semibold uppercase tracking-wider text-gray-400">
                   ISBN
                 </span>
-                <span className="font-bold text-[#183D32] text-sm">978-0-52</span>
+                <span className="font-bold text-[#183D32] text-sm">
+                  978-0-52
+                </span>
               </div>
             </div>
 
@@ -281,7 +287,9 @@ const BookCard = ({ BookData }: { BookData: IBook }) => {
                 <h4 className="font-serif text-sm font-bold text-[#183D32] line-clamp-1">
                   {BookData.title}
                 </h4>
-                <p className="font-sans text-xs text-gray-500">{BookData.author}</p>
+                <p className="font-sans text-xs text-gray-500">
+                  {BookData.author}
+                </p>
               </div>
             </div>
 
@@ -339,7 +347,8 @@ const BookCard = ({ BookData }: { BookData: IBook }) => {
               </div>
 
               <p className="font-sans text-xs text-gray-500 pt-1">
-                You&apos;ll have 1 month to enjoy this title. You can return it anytime.
+                You&apos;ll have 1 month to enjoy this title. You can return it
+                anytime.
               </p>
 
               {/* Action Buttons */}

@@ -4,12 +4,9 @@ import Image from "next/image";
 import { Heart, ArrowRight } from "lucide-react";
 import { IBook } from "@/type/type";
 
-
-
 const NewArivals = async () => {
- 
-  const res = await fetch("http://localhost:5000/new-arrivals", {
-    cache: "no-store", 
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/new-arrivals`, {
+    cache: "no-store",
   });
   const books: IBook[] = await res.json();
 
@@ -34,10 +31,7 @@ const NewArivals = async () => {
           </div>
 
           {/* View All Books Link */}
-          <button
-            
-            className="inline-flex items-center gap-2 font-sans text-sm font-semibold text-[#183D32] hover:text-[#C6A15B] transition-colors"
-          >
+          <button className="inline-flex items-center gap-2 font-sans text-sm font-semibold text-[#183D32] hover:text-[#C6A15B] transition-colors">
             View all books
             <ArrowRight className="h-4 w-4" />
           </button>

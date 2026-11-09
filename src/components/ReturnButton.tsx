@@ -16,9 +16,12 @@ export default function ReturnButton({ borrowId }: IReturnProps) {
   const handleReturn = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/borrows/${borrowId}`, {
-        method: "DELETE", 
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/borrows/${borrowId}`,
+        {
+          method: "DELETE",
+        },
+      );
 
       if (res.ok) {
         toast.success("Book returned successfully!");

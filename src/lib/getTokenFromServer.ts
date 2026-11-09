@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { auth } from './auth';
 import { headers } from 'next/headers';
 

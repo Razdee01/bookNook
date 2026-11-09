@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { authClient } from './auth-client';
 
 const getTokenFromClient = async() => {

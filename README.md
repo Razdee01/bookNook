@@ -14,13 +14,13 @@ BookNook is a full-stack book-lending web app. Readers can browse a curated cata
 
 ## Tech Stack
 
-| Layer      | Technology |
-| ---------- | ---------- |
-| Framework  | [Next.js 16](https://nextjs.org) (App Router, Turbopack) — `src/proxy.ts` request middleware |
-| UI         | React 19, TypeScript, Tailwind CSS v4, shadcn/ui (base-nova style on Base UI), lucide-react, sonner |
-| Auth       | Better Auth — email/password + Google OAuth, JWT plugin, MongoDB adapter |
-| Data       | MongoDB (auth store) + a separate REST API (book/borrow data) |
-| Build      | `next build`, ESLint 9 flat config, `tsc --noEmit` |
+| Layer     | Technology                                                                                          |
+| --------- | --------------------------------------------------------------------------------------------------- |
+| Framework | [Next.js 16](https://nextjs.org) (App Router, Turbopack) — `src/proxy.ts` request middleware        |
+| UI        | React 19, TypeScript, Tailwind CSS v4, shadcn/ui (base-nova style on Base UI), lucide-react, sonner |
+| Auth      | Better Auth — email/password + Google OAuth, JWT plugin, MongoDB adapter                            |
+| Data      | MongoDB (auth store) + a separate REST API (book/borrow data)                                       |
+| Build     | `next build`, ESLint 9 flat config, `tsc --noEmit`                                                  |
 
 ## Getting Started
 
@@ -28,7 +28,7 @@ BookNook is a full-stack book-lending web app. Readers can browse a curated cata
 
 - Node.js 20+
 - A MongoDB database
-- **The BookNook backend running on `http://localhost:5000`** — this repo is the frontend only. Every book/borrow request calls that API (`/books`, `/borrows`, `/add-books`, …), so the pages will fail to load data without it.
+- **The BookNook backend running on `${process.env.NEXT_PUBLIC_API_URL}`** — this repo is the frontend only. Every book/borrow request calls that API (`/books`, `/borrows`, `/add-books`, …), so the pages will fail to load data without it.
 
 ### Environment variables
 

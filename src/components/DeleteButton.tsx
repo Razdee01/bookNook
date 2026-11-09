@@ -13,9 +13,12 @@ const DeleteButton = ({ book }: IProps) => {
   const router = useRouter();
 
   const handleDelete = async () => {
-    const res = await fetch(`http://localhost:5000/delete/${book._id}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/delete/${book._id}`,
+      {
+        method: "DELETE",
+      },
+    );
 
     const data = await res.json();
     console.log(data);

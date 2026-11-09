@@ -1,4 +1,3 @@
-
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -8,7 +7,6 @@ import {
   Search,
   Filter,
   Edit,
-  
   BookOpen,
   Library,
   Sparkles,
@@ -22,7 +20,6 @@ import EditButton from "@/components/EditButton";
 import getTokenFromServer from "@/lib/getTokenFromServer";
 import { Metadata } from "next";
 
-
 export const metadata: Metadata = {
   title: "BookNook | My Books Library",
   description: "Manage titles you've added to the collection.",
@@ -33,20 +30,19 @@ const MyBooksPage = async () => {
   });
 
   const email = session?.user.email;
-  const token=await getTokenFromServer()
+  const token = await getTokenFromServer();
 
-  const res = await fetch(`http://localhost:5000/my-books/${email}`, {
-    cache: "no-store",
-     headers: {
-          authorization: `Bearer ${token}`,
-        },
-
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/my-books/${email}`,
+    {
+      cache: "no-store",
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    },
+  );
 
   const myBooks: IBook[] = await res.json();
-  
-  
-
 
   // Calculate dynamic stats from actual data if needed, or use defaults
   const totalBooksAdded = myBooks?.length || 0;

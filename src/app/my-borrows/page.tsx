@@ -89,29 +89,28 @@ const getBorrowDetails = (item: IBorrowItem) => {
 };
 
 const myBorrows = async () => {
- const session = await auth.api.getSession({ headers: await headers() });
+  const session = await auth.api.getSession({ headers: await headers() });
 
- if (!session?.user) {
-   redirect("/login"); 
- }
+  if (!session?.user) {
+    redirect("/login");
+  }
 
- const user = session.user; 
- const token = await getTokenFromServer();
+  const user = session.user;
+  const token = await getTokenFromServer();
   let borrows: IBorrowItem[] = [];
   const res = await fetch(
-  `http://localhost:5000/borrows/${encodeURIComponent(user.email)}`,
-  {
-    cache: "no-store",
-    headers: {
-      Authorization: `Bearer ${token}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/borrows/${encodeURIComponent(user.email)}`,
+    {
+      cache: "no-store",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     },
+  );
+  if (res.ok) {
+    const data = await res.json();
+    borrows = Array.isArray(data) ? data : [];
   }
-);
-      if (res.ok) {
-        const data = await res.json();
-        borrows = Array.isArray(data) ? data : [];
-      }
- 
 
   const totalBorrowed = borrows.length;
 

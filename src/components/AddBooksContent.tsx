@@ -29,7 +29,7 @@ const AddBooksContent = () => {
          addedDate: new Date().toISOString(),
          addedBy: user?.email,
        };
-       const res = await fetch("http://localhost:5000/add-books", {
+       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/add-books`, {
          method: "POST",
          headers: {
            "Content-Type": "application/json",

@@ -9,12 +9,10 @@ export const metadata: Metadata = {
   description: "Browse the full library collection.",
 };
 const AllBooks = async () => {
-  const res = await fetch("http://localhost:5000/books", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`, {
     cache: "no-store",
   });
   const books: IBook[] = await res.json();
-
-  
 
   return (
     <section className="bg-[#F8F6F0]  py-16 lg:py-15">
@@ -50,7 +48,7 @@ const AllBooks = async () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {books?.map((book) => (
             <Link
-            href={`/books/${book._id}`}
+              href={`/books/${book._id}`}
               key={book._id}
               className="group flex flex-col justify-between rounded-2xl bg-white/70 p-4 border border-[#E8E4DA] shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1"
             >
